@@ -1,0 +1,6 @@
+[workspace]
+members = ["android-app", "core"]
+resolver = "2"
+
+[profile.dev]
+debug = 0

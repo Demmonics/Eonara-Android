@@ -1,0 +1,12 @@
+/target/
+/.gradle/
+/android/.gradle/
+/android/build/
+/android/local.properties
+/android/app/build/
+/android/app/src/main/jniLibs/**/*.so
+/local.properties
+*.apk
+*.aab
+*.jks
+*.keystore
