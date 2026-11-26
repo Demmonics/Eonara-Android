@@ -966,7 +966,7 @@ impl LyricsTransport for LrclibTransport {
             .get(url)
             .set(
                 "User-Agent",
-                "LyricMotion/1.0 (public LRCLIB lyrics lookup)",
+                "Eonara/0.1.0 (public LRCLIB lyrics lookup)",
             )
             .call()
         {

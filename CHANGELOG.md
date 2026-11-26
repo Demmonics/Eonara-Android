@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.0-eonara
+
+- Officially rebranded to **Eonara for Android** (*The Art of Sound*).
+- Added adaptive launcher icons (`mipmap-anydpi-v26` + `mdpi`–`xxxhdpi` + Android 13 monochrome), dark-obsidian poster drawable (`eonara_poster.jpg`), brief native WGPU Splash transition (1.15 s), and an **About Eonara** dialog accessible from top-left `EONARA · ABOUT` and the player picker.
+- Updated `AndroidManifest.xml`, `settings.gradle.kts`, WGPU/logcat tags, LRCLIB `User-Agent`, `README.md`, `LICENSE`, and `docs/THIRD_PARTY_NOTICES.md` while keeping `com.lyricmotion.android` and all 7 verified JNI bindings unchanged.
+
 ## M0 — Native rendering feasibility
 
 - Investigated and built the pinned GPUI Mobile Android candidate; documented the missing public custom-WGSL hook.

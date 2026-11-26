@@ -20,4 +20,4 @@ The manifest declares `INTERNET` for the public LRCLIB provider. Notification-li
 
 ## Completion
 
-The source integration builds for both Android ABIs and the portable core is tested. No device is connected, so the latest APKs have not been smoke-tested. A controlled Android media-session publisher and real-player test remain required; do not claim runtime integration or player compatibility until observed session behavior and available transport flags are verified on a device.
+The source integration builds for both Android ABIs and the portable core is tested. The fixed ARM64 APK has been exercised on a OnePlus 7 Pro with an active Spotify session: metadata, artwork, playback state/progress and synchronized lyrics were observed on the native screen. This verifies Spotify's media-session data path on that device, not every Spotify command or all Spotify versions. Other music players remain unverified; see `docs/TEST_REPORT.md`.

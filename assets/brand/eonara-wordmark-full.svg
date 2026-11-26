@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 890 280" fill="none">
+  <defs>
+    <linearGradient id="wmGold" x1="10%" y1="0%" x2="90%" y2="100%">
+      <stop offset="0%" stop-color="#f9e2c1"/>
+      <stop offset="50%" stop-color="#e8c493"/>
+      <stop offset="100%" stop-color="#c99f68"/>
+    </linearGradient>
+    <linearGradient id="wmGlow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#e8c493" stop-opacity="0.12"/>
+      <stop offset="50%" stop-color="#f7dfb9" stop-opacity="0.92"/>
+      <stop offset="100%" stop-color="#e8c493" stop-opacity="0.12"/>
+    </linearGradient>
+  </defs>
+  <!-- Back orbit behind O-N-A-R -->
+  <g transform="rotate(-11 475 110)">
+    <path d="M 208 112 A 268 41 0 0 1 744 106" stroke="url(#wmGold)" stroke-opacity="0.62" stroke-width="2.4"/>
+  </g>
+  <!-- E -->
+  <path d="M 105 64 H 176 V 73 H 119 V 104 H 164 V 113 H 119 V 146 H 178 V 155 H 105 Z" fill="url(#wmGold)"/>
+  <!-- O slash -->
+  <circle cx="248" cy="110" r="44" stroke="url(#wmGold)" stroke-width="11"/>
+  <path d="M 200 144 L 296 76" stroke="url(#wmGold)" stroke-width="4.5" stroke-linecap="round"/>
+  <!-- N + star spire -->
+  <path d="M 326 155 V 64 H 338 L 408 139 V 64 H 419 V 155 H 407 L 337 80 V 155 Z" fill="url(#wmGold)"/>
+  <path d="M 378 8 C 380.2 38 383.5 46 398 48 C 383.5 50 380.2 58 378 82 C 375.8 58 372.5 50 358 48 C 372.5 46 375.8 38 378 8 Z" fill="url(#wmGold)"/>
+  <!-- A -->
+  <path d="M 451 155 L 494 63 H 506 L 549 155 H 534 L 500 79 L 466 155 Z" fill="url(#wmGold)"/>
+  <path d="M 472 122 Q 500 114 528 122" stroke="url(#wmGold)" stroke-width="6.5" stroke-linecap="round"/>
+  <!-- R -->
+  <path d="M 578 155 V 64 H 618 C 638 64 650 74 650 90 C 650 105 639 115 621 117 L 656 155 H 639 L 607 118 H 591 V 155 Z M 591 74 V 108 H 617 C 630 108 637 101 637 91 C 637 80 630 74 617 74 Z" fill="url(#wmGold)"/>
+  <!-- Final A -->
+  <path d="M 684 155 L 728 63 H 741 L 785 155 H 770 L 734.5 78 L 699 155 Z" fill="url(#wmGold)"/>
+  <!-- Front orbit crossing smoothly cleanly above subtitle -->
+  <g transform="rotate(-11 475 110)">
+    <path d="M 744 106 A 268 41 0 0 1 208 112" stroke="#08080b" stroke-width="8.5" stroke-opacity="0.82"/>
+    <path d="M 744 106 A 268 41 0 0 1 208 112" stroke="url(#wmGold)" stroke-width="3.2" stroke-linecap="round"/>
+  </g>
+  <!-- Wide-spaced editorial tagline well below orbit -->
+  <line x1="175" y1="216" x2="250" y2="216" stroke="url(#wmGlow)" stroke-width="1.2"/>
+  <text x="445" y="221" text-anchor="middle" fill="#e8c493" font-family="'Inter Variable', 'Segoe UI', sans-serif" font-size="16" font-weight="500" letter-spacing="11">THE ART OF SOUND</text>
+  <line x1="640" y1="216" x2="715" y2="216" stroke="url(#wmGlow)" stroke-width="1.2"/>
+  <!-- Bottom star anchor -->
+  <line x1="345" y1="255" x2="429" y2="255" stroke="#e8c493" stroke-opacity="0.32" stroke-width="1"/>
+  <path d="M 445 239 C 446.4 251 449 253.6 461 255 C 449 256.4 446.4 259 445 271 C 443.6 259 441 256.4 429 255 C 441 253.6 443.6 251 445 239 Z" fill="#f5dbb5"/>
+  <line x1="461" y1="255" x2="545" y2="255" stroke="#e8c493" stroke-opacity="0.32" stroke-width="1"/>
+</svg>

@@ -5,6 +5,9 @@ import android.app.NativeActivity
 import android.content.ComponentName
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Color
+import android.graphics.Typeface
+import android.graphics.drawable.GradientDrawable
 import android.media.MediaMetadata
 import android.media.session.MediaController
 import android.media.session.MediaSessionManager
@@ -15,8 +18,14 @@ import android.os.Looper
 import android.os.SystemClock
 import android.provider.OpenableColumns
 import android.provider.Settings
+import android.util.TypedValue
+import android.view.Gravity
 import android.view.MotionEvent
 import android.content.ContentResolver
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.ScrollView
+import android.widget.TextView
 import android.widget.Toast
 import java.io.ByteArrayOutputStream
 import java.io.IOException
@@ -88,6 +97,7 @@ class LyricMotionActivity : NativeActivity() {
     private var artworkRevision = 0L
     private var interceptingControls = false
     private var sessionPickerTouch = false
+    private var aboutDialogTouch = false
     private var activeControllers: List<MediaController> = emptyList()
     private var manualSessionId: String? = null
     private var selectedTrackId: String? = null
@@ -109,6 +119,7 @@ class LyricMotionActivity : NativeActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        System.loadLibrary("lyricmotion_android")
         nativeOnCacheRoot(cacheDir.resolve("lyrics").absolutePath)
         sessionManager = getSystemService(MediaSessionManager::class.java)
         if (!hasNotificationAccess()) {
@@ -134,6 +145,12 @@ class LyricMotionActivity : NativeActivity() {
 
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
         if (event.actionMasked == MotionEvent.ACTION_DOWN) {
+            aboutDialogTouch =
+                event.x <= widthPixels() * 0.30f && event.y <= heightPixels() * 0.14f
+            if (aboutDialogTouch) {
+                showAboutDialog()
+                return true
+            }
             sessionPickerTouch =
                 event.x >= widthPixels() * 0.78f && event.y <= heightPixels() * 0.16f
             if (sessionPickerTouch) {
@@ -143,6 +160,14 @@ class LyricMotionActivity : NativeActivity() {
             val bottom = event.y >= heightPixels() * 0.76f
             interceptingControls = bottom && (selectedController != null || !hasNotificationAccess())
             scheduleImportPress(event)
+        }
+        if (aboutDialogTouch) {
+            if (event.actionMasked == MotionEvent.ACTION_UP ||
+                event.actionMasked == MotionEvent.ACTION_CANCEL
+            ) {
+                aboutDialogTouch = false
+            }
+            return true
         }
         if (sessionPickerTouch) {
             if (event.actionMasked == MotionEvent.ACTION_UP ||
@@ -231,7 +256,7 @@ class LyricMotionActivity : NativeActivity() {
         AlertDialog.Builder(this)
             .setTitle("Connect a music player")
             .setMessage(
-                "LyricMotion needs notification access to observe active music sessions " +
+                "Eonara needs notification access to observe active music sessions " +
                     "and show track details and lyrics. It does not read other notifications.",
             )
             .setNegativeButton("Not now", null)
@@ -535,7 +560,7 @@ class LyricMotionActivity : NativeActivity() {
             }
             ImportTarget(sessionId, trackId, sessionEpoch)
         } else {
-            ImportTarget(null, "lyricmotion-demo", 0)
+            ImportTarget(null, "eonara-demo", 0)
         }
         pendingImportTarget = target
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
@@ -649,7 +674,97 @@ class LyricMotionActivity : NativeActivity() {
                 }
                 dialog.dismiss()
             }
+            .setNeutralButton("About Eonara") { _, _ ->
+                showAboutDialog()
+            }
             .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun dp(value: Int): Int = TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP,
+        value.toFloat(),
+        resources.displayMetrics,
+    ).toInt()
+
+    private fun showAboutDialog() {
+        val container = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            gravity = Gravity.CENTER_HORIZONTAL
+            setBackgroundColor(Color.parseColor("#0A0A0D"))
+            setPadding(dp(22), dp(22), dp(22), dp(14))
+        }
+
+        val posterFrame = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(dp(2), dp(2), dp(2), dp(2))
+            background = GradientDrawable().apply {
+                setColor(Color.parseColor("#111116"))
+                cornerRadius = dp(14).toFloat()
+                setStroke(dp(1), Color.parseColor("#59E8C493"))
+            }
+        }
+        val poster = ImageView(this).apply {
+            setImageResource(R.drawable.eonara_poster)
+            adjustViewBounds = true
+            scaleType = ImageView.ScaleType.FIT_CENTER
+            maxHeight = dp(250)
+            contentDescription = "Eonara — The Art of Sound"
+        }
+        posterFrame.addView(poster)
+        container.addView(posterFrame)
+
+        val wordmark = TextView(this).apply {
+            text = "EONARA"
+            setTextColor(Color.parseColor("#F7EFE2"))
+            textSize = 22f
+            typeface = Typeface.SERIF
+            letterSpacing = 0.22f
+            gravity = Gravity.CENTER
+            setPadding(0, dp(16), 0, dp(2))
+        }
+        container.addView(wordmark)
+
+        val tagline = TextView(this).apply {
+            text = "THE ART OF SOUND"
+            setTextColor(Color.parseColor("#E8C493"))
+            textSize = 11f
+            typeface = Typeface.DEFAULT_BOLD
+            letterSpacing = 0.26f
+            gravity = Gravity.CENTER
+        }
+        container.addView(tagline)
+
+        val version = TextView(this).apply {
+            text = "Eonara for Android · v0.1.0 · Direct WGPU Engine"
+            setTextColor(Color.parseColor("#C7BFA9"))
+            textSize = 12f
+            gravity = Gravity.CENTER
+            setPadding(0, dp(10), 0, dp(12))
+        }
+        container.addView(version)
+
+        val body = TextView(this).apply {
+            text = "Native WGPU synchronized lyric visualizer built for Android MediaSession playback, " +
+                "offline-cached LRCLIB lookups, and local LRC / TTML / Lyricsfile import.\n\n" +
+                "Independent open-source software (MIT / Apache-2.0; Instrument Serif under SIL OFL 1.1) " +
+                "inspired by kinetic lyric craft such as Verci.\n\n" +
+                "Package com.lyricmotion.android is preserved for seamless upgrades."
+            setTextColor(Color.parseColor("#D8D1C4"))
+            textSize = 13f
+            setLineSpacing(dp(3).toFloat(), 1.15f)
+            gravity = Gravity.CENTER
+        }
+        container.addView(body)
+
+        val scroller = ScrollView(this).apply {
+            setBackgroundColor(Color.parseColor("#0A0A0D"))
+            addView(container)
+        }
+
+        AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Dialog_Alert)
+            .setView(scroller)
+            .setPositiveButton("Close", null)
             .show()
     }
 

@@ -49,16 +49,31 @@ mod android {
     }
 
     impl RenderModel {
+        fn splash() -> Self {
+            Self {
+                title: "EONARA".into(),
+                subtitle: "THE ART OF SOUND".into(),
+                previous_lyric: String::new(),
+                current_lyric: "Synchronized Kinetic Typography".into(),
+                next_lyric: "Direct WGPU · Android".into(),
+                lyrics_state: "Opening kinetic stage…".into(),
+                playback_label: "EONARA FOR ANDROID · v0.1.0".into(),
+                controls_label: "The Art of Sound".into(),
+                artwork: None,
+                show_artwork_placeholder: false,
+            }
+        }
+
         fn demo() -> Self {
             Self {
                 title: "Passing Light".into(),
-                subtitle: "LyricMotion demo · Sample track".into(),
+                subtitle: "Eonara demo · Sample track".into(),
                 previous_lyric: String::new(),
                 current_lyric: "Words drift, then settle".into(),
                 next_lyric: "Light follows the evening".into(),
                 lyrics_state: "Demo lyrics · line-synced".into(),
                 playback_label: "DEMO MODE".into(),
-                controls_label: "Tap to move the light · Hold to import lyrics".into(),
+                controls_label: "Tap: move light · Top-left: About · Hold: import".into(),
                 artwork: None,
                 show_artwork_placeholder: true,
             }
@@ -123,7 +138,7 @@ mod android {
                 lyrics_state: lyrics_state.to_owned(),
                 playback_label: playback_label.into(),
                 controls_label: format!(
-                    "{} · Top right: choose player · Hold to import lyrics",
+                    "{} · Top-left: About · Top-right: player · Hold: import",
                     if labels.is_empty() {
                         "No transport actions available".into()
                     } else {
@@ -162,9 +177,9 @@ mod android {
 
             let demo_started = Instant::now();
             let mut demo_clock = PlaybackClock::default();
-            demo_clock.select_session(Some("lyricmotion-demo".into()), 1);
+            demo_clock.select_session(Some("eonara-demo".into()), 1);
             let _ = demo_clock.update(&PlaybackSnapshot {
-                session_id: "lyricmotion-demo".into(),
+                session_id: "eonara-demo".into(),
                 session_epoch: 1,
                 revision: 1,
                 track_id: Some("demo-passing-light".into()),
@@ -370,7 +385,7 @@ mod android {
                     format,
                 } => {
                     if session_id.is_none() && self.selected_session.is_none() {
-                        if epoch != 0 || track_id != "lyricmotion-demo" {
+                        if epoch != 0 || track_id != "eonara-demo" {
                             return;
                         }
                         self.demo_lyrics = parse_imported_lyrics(&text, &format);
@@ -785,7 +800,7 @@ fn fs_main(input: VertexOutput) -> @location(0) vec4<f32> {
             );
             let (device, queue) = adapter
                 .request_device(&wgpu::DeviceDescriptor {
-                    label: Some("LyricMotion direct WGPU device"),
+                    label: Some("Eonara direct WGPU device"),
                     required_features: wgpu::Features::empty(),
                     required_limits: wgpu::Limits::downlevel_defaults()
                         .using_resolution(adapter_limits),
@@ -830,11 +845,11 @@ fn fs_main(input: VertexOutput) -> @location(0) vec4<f32> {
                 include_bytes!("../assets/fonts/InstrumentSerif-Regular.ttf").to_vec(),
             );
             let mut swash_cache = SwashCache::new();
-            let model = RenderModel::demo();
+            let model = RenderModel::splash();
             let text = Self::rasterize_text(&mut font_system, &mut swash_cache, &model);
 
             let text_texture = device.create_texture(&wgpu::TextureDescriptor {
-                label: Some("LyricMotion shaped glyph texture"),
+                label: Some("Eonara shaped glyph texture"),
                 size: wgpu::Extent3d {
                     width: TEXT_WIDTH,
                     height: TEXT_HEIGHT,
@@ -983,14 +998,44 @@ fn fs_main(input: VertexOutput) -> @location(0) vec4<f32> {
             model: &RenderModel,
         ) -> Vec<u8> {
             let mut pixels = vec![0; (TEXT_WIDTH * TEXT_HEIGHT * 4) as usize];
+            if model.show_artwork_placeholder {
+                Self::draw_text_aligned(
+                    &mut pixels,
+                    font_system,
+                    swash_cache,
+                    "EONARA · ABOUT",
+                    15.0,
+                    22.0,
+                    24,
+                    6,
+                    TEXT_WIDTH as f32 - 48.0,
+                    Color::rgba(232, 196, 147, 225),
+                    Family::SansSerif,
+                    Align::Left,
+                );
+                Self::draw_text_aligned(
+                    &mut pixels,
+                    font_system,
+                    swash_cache,
+                    "PLAYERS",
+                    15.0,
+                    22.0,
+                    24,
+                    6,
+                    TEXT_WIDTH as f32 - 48.0,
+                    Color::rgba(233, 226, 211, 185),
+                    Family::SansSerif,
+                    Align::Right,
+                );
+            }
             Self::draw_text(
                 &mut pixels,
                 font_system,
                 swash_cache,
                 &model.title,
-                40.0,
-                50.0,
-                5,
+                38.0,
+                48.0,
+                32,
                 Color::rgba(255, 252, 246, 255),
                 Family::Name("Instrument Serif"),
             );
@@ -999,9 +1044,9 @@ fn fs_main(input: VertexOutput) -> @location(0) vec4<f32> {
                 font_system,
                 swash_cache,
                 &model.subtitle,
-                22.0,
-                32.0,
-                60,
+                21.0,
+                30.0,
+                82,
                 Color::rgba(233, 226, 211, 235),
                 Family::SansSerif,
             );
@@ -1100,20 +1145,51 @@ fn fs_main(input: VertexOutput) -> @location(0) vec4<f32> {
             color: Color,
             family: Family<'_>,
         ) {
+            Self::draw_text_aligned(
+                pixels,
+                font_system,
+                swash_cache,
+                text,
+                font_size,
+                line_height,
+                0,
+                y_offset,
+                TEXT_WIDTH as f32,
+                color,
+                family,
+                Align::Center,
+            );
+        }
+
+        #[allow(clippy::too_many_arguments)]
+        fn draw_text_aligned(
+            pixels: &mut [u8],
+            font_system: &mut FontSystem,
+            swash_cache: &mut SwashCache,
+            text: &str,
+            font_size: f32,
+            line_height: f32,
+            x_offset: i32,
+            y_offset: i32,
+            box_width: f32,
+            color: Color,
+            family: Family<'_>,
+            align: Align,
+        ) {
             let mut buffer = Buffer::new(font_system, Metrics::new(font_size, line_height));
-            buffer.set_size(Some(TEXT_WIDTH as f32), Some(64.0));
+            buffer.set_size(Some(box_width), Some(64.0));
             buffer.set_text(
                 &truncate_text(text, 120),
                 &Attrs::new().family(family),
                 Shaping::Advanced,
-                Some(Align::Center),
+                Some(align),
             );
             buffer.draw(
                 font_system,
                 swash_cache,
                 color,
                 |x, y, width, height, color| {
-                    Self::blend_glyph(pixels, x, y + y_offset, width, height, color);
+                    Self::blend_glyph(pixels, x + x_offset, y + y_offset, width, height, color);
                 },
             );
         }
@@ -1214,15 +1290,25 @@ fn fs_main(input: VertexOutput) -> @location(0) vec4<f32> {
         }
 
         fn set_model(&mut self, model: RenderModel) {
-            if self.model == model {
+            let active_model = if self.started_at.elapsed() < Duration::from_millis(1150) {
+                RenderModel::splash()
+            } else {
+                model
+            };
+            if self.model == active_model {
                 return;
             }
-            let pixels = Self::rasterize_text(&mut self.font_system, &mut self.swash_cache, &model);
-            self.model = model;
+            let pixels =
+                Self::rasterize_text(&mut self.font_system, &mut self.swash_cache, &active_model);
+            self.model = active_model;
             self.upload_text(&pixels);
         }
 
         fn set_progress(&mut self, progress: Option<f32>) {
+            if self.started_at.elapsed() < Duration::from_millis(1150) {
+                self.progress = None;
+                return;
+            }
             self.progress = progress.map(|value| value.clamp(0.0, 1.0));
         }
 
@@ -1257,11 +1343,11 @@ fn fs_main(input: VertexOutput) -> @location(0) vec4<f32> {
             let mut encoder = self
                 .device
                 .create_command_encoder(&wgpu::CommandEncoderDescriptor {
-                    label: Some("LyricMotion gradient frame"),
+                    label: Some("Eonara gradient frame"),
                 });
             {
                 let mut pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
-                    label: Some("LyricMotion gradient pass"),
+                    label: Some("Eonara gradient pass"),
                     color_attachments: &[Some(wgpu::RenderPassColorAttachment {
                         view: &view,
                         resolve_target: None,
@@ -1290,7 +1376,7 @@ fn fs_main(input: VertexOutput) -> @location(0) vec4<f32> {
         android_logger::init_once(
             android_logger::Config::default()
                 .with_max_level(log::LevelFilter::Info)
-                .with_tag("LyricMotion"),
+                .with_tag("Eonara"),
         );
 
         let mut renderer = None;

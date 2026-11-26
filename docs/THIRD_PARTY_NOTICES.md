@@ -25,3 +25,9 @@ The portable lyrics parser uses `roxmltree` 0.20.0, licensed `MIT OR Apache-2.0`
 The portable LRCLIB lyrics service adds `serde` 1.0.228, `serde_json` 1.0.145, `ureq` 2.12.1 and `unicode-normalization` 0.1.25, each licensed `MIT OR Apache-2.0`. Lyricsfile parsing adds `serde_yaml_ng` 0.10.0 (`MIT OR Apache-2.0`) and `yaml-rust2` 0.13.2 (`MIT OR Apache-2.0`). Their exact versions and the complete resolved transitive graph are recorded in `Cargo.lock`. The Lyricsfile 1.0 draft specification and format examples are dedicated to CC0 1.0 by their authors; this app implements the documented subset and does not bundle upstream examples. The TLS implementation includes rustls 0.23.46 (`Apache-2.0 OR ISC OR MIT`), ring 0.17.14 (`Apache-2.0 AND ISC`) and webpki-roots 0.26.11 (`CDLA-Permissive-2.0`). webpki-roots 1.0.12 does not declare a Cargo license expression; verify its package license before redistribution. Review current package metadata and include applicable license texts when preparing a release. The service contacts only LRCLIB's public `/api/get` endpoint; it does not use player or protected APIs. No lyric contents or track metadata are logged by this module.
 
 No Verci reference media, LiquidMusic code/assets or proprietary reference fonts are included. Complete the Rust transitive-license audit before any release packaging.
+
+
+## Inspiration & Brand Artwork Notice
+
+- Eonara for Android is an independent open-source project inspired by kinetic lyric design such as Verci. No proprietary Verci media or assets are bundled.
+- Official Eonara visual identity under `assets/brand/` and derived Android resources (`android/app/src/main/res/drawable/eonara_poster.jpg`, adaptive icons, and mipmaps) were supplied and authorized by the project owner for public distribution in the Eonara repositories.

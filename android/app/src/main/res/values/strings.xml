@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Eonara</string>
+    <string name="app_tagline">The Art of Sound</string>
+    <string name="notification_service_label">Eonara media session access</string>
+</resources>

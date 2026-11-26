@@ -22,7 +22,13 @@ The Windows `PlaybackClock` and fixtures are porting references, not source to c
 
 ## Remaining architectural checks
 
-- Verify the controlled media-session-to-clock-to-lyrics-to-renderer path on an authorized device, then test actual players as available; the current APKs have not yet been run.
+- Exercise transport-action delivery and remaining lifecycle states on physical ARM64; Spotify's metadata/artwork/lyrics path and Home/foreground surface recreation are already verified on the OnePlus 7 Pro.
 - Confirm the direct renderer on a physical ARM64 device and its supported GPU backend.
 - Test process death, screen-off, surface loss/recreation and permission revocation before making lifecycle guarantees.
 - Keep overlay behavior behind its separate Android security and lifecycle feasibility gate.
+
+## Eonara rebrand & upgrade continuity
+
+- Display name: **Eonara** (*The Art of Sound*); notification-listener service label: `Eonara media session access`; debug WGPU pipeline labels and log tag (`Eonara`); LRCLIB User-Agent: `Eonara/0.1.0 (public LRCLIB lyrics lookup)`.
+- Native Splash & About: `DirectRenderer` renders a 1.15 s **EONARA — THE ART OF SOUND** splash state on the single WGPU surface before transitioning to Demo/Live playback, and exposes a top-left `EONARA · ABOUT` zone (plus an **About Eonara** button in the player picker) that opens a styled `AlertDialog` with `R.drawable.eonara_poster`.
+- Compatibility invariants: `applicationId` / namespace (`com.lyricmotion.android`), `liblyricmotion_android.so` library name, `LyricMotionActivity` / `LyricMotionNotificationListener` class names, and all 7 JNI native method signatures remain unchanged for seamless upgrades.

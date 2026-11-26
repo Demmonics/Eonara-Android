@@ -1,4 +1,4 @@
-LyricMotion is dual-licensed under either of:
+Eonara is dual-licensed under either of:
 
 - Apache License, Version 2.0 (see LICENSE-APACHE or http://www.apache.org/licenses/LICENSE-2.0)
 - MIT License (see LICENSE-MIT or http://opensource.org/licenses/MIT)
@@ -9,5 +9,10 @@ Unless you explicitly state otherwise, any contribution intentionally submitted
 for inclusion in the work by you shall be dual-licensed as above, without any
 additional terms or conditions.
 
-Bundled third-party fonts and dependency notices are listed in
-THIRD_PARTY_NOTICES.md and android-app/assets/licenses/.
+Additional Notices:
+- Bundled typeface Instrument Serif (android-app/assets/fonts/InstrumentSerif-Regular.ttf)
+  is licensed under the SIL Open Font License 1.1 (see android-app/assets/licenses/InstrumentSerif-OFL.txt).
+- Upstream dependencies are documented in docs/THIRD_PARTY_NOTICES.md and Cargo.lock.
+- Official Eonara brand artwork and derived icons under assets/brand/ and
+  android/app/src/main/res/ were supplied and authorized by the project author
+  for official Eonara distribution and public repository builds.

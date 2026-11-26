@@ -2,8 +2,9 @@
 name = "lyricmotion-core"
 version = "0.1.0"
 edition = "2021"
-license = "MIT OR Apache-2.0"
 publish = false
+license = "MIT"
+description = "Portable playback clock, lyrics parser, and LRCLIB engine for Eonara"
 
 [lib]
 path = "src/lib.rs"

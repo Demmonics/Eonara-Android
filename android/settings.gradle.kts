@@ -14,5 +14,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "LyricMotionAndroid"
+rootProject.name = "EonaraAndroid"
 include(":app")

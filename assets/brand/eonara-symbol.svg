@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none">
+  <defs>
+    <radialGradient id="bgGlow" cx="74%" cy="22%" r="78%">
+      <stop offset="0%" stop-color="#2a161c"/>
+      <stop offset="48%" stop-color="#0f0f15"/>
+      <stop offset="100%" stop-color="#08080b"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="20%" y1="15%" x2="82%" y2="88%">
+      <stop offset="0%" stop-color="#fae4c4"/>
+      <stop offset="48%" stop-color="#e8c493"/>
+      <stop offset="100%" stop-color="#b98e58"/>
+    </linearGradient>
+    <linearGradient id="goldBright" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fff4df"/>
+      <stop offset="65%" stop-color="#f0d1a4"/>
+      <stop offset="100%" stop-color="#cfa670"/>
+    </linearGradient>
+    <radialGradient id="starSapphire" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#d8ecff" stop-opacity="0.95"/>
+      <stop offset="45%" stop-color="#5d8cc7" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#5d8cc7" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect x="8" y="8" width="240" height="240" rx="54" fill="url(#bgGlow)"/>
+  <rect x="9" y="9" width="238" height="238" rx="54" stroke="url(#gold)" stroke-opacity="0.32" stroke-width="2.4"/>
+  <g transform="rotate(-27 126 134)">
+    <path d="M 40 134 A 86 27 0 0 1 212 134" stroke="#b98e58" stroke-opacity="0.58" stroke-width="6.5" stroke-linecap="round"/>
+  </g>
+  <circle cx="122" cy="136" r="43" stroke="url(#gold)" stroke-width="14.5"/>
+  <path d="M 80 179 L 172 85" stroke="#09090d" stroke-width="19" stroke-linecap="round"/>
+  <path d="M 80 179 L 172 85" stroke="url(#goldBright)" stroke-width="10.5" stroke-linecap="round"/>
+  <g transform="rotate(-27 126 134)">
+    <path d="M 212 134 A 86 27 0 0 1 40 134" stroke="#09090d" stroke-width="16" stroke-linecap="round"/>
+    <path d="M 212 134 A 86 27 0 0 1 40 134" stroke="url(#goldBright)" stroke-width="8.5" stroke-linecap="round"/>
+  </g>
+  <circle cx="182" cy="74" r="24" fill="url(#starSapphire)"/>
+  <path d="M 182 44 C 183.8 64 191 71.5 212 74 C 191 76.5 183.8 84 182 104 C 180.2 84 173 76.5 152 74 C 173 71.5 180.2 64 182 44 Z" fill="url(#goldBright)"/>
+  <circle cx="182" cy="74" r="3.4" fill="#fffaf0"/>
+</svg>

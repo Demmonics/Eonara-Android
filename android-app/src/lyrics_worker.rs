@@ -43,7 +43,7 @@ impl LyricsWorker {
         let state = Arc::new((Mutex::new(WorkerState::default()), Condvar::new()));
         let worker_state = state.clone();
         thread::Builder::new()
-            .name("lyricmotion-lyrics".into())
+            .name("eonara-lyrics".into())
             .spawn(move || run_worker(LyricsService::new(cache_root), worker_state))?;
         Ok(Self { state })
     }

@@ -11,12 +11,14 @@
     <application
         android:allowBackup="false"
         android:hardwareAccelerated="true"
-        android:label="LyricMotion"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:label="@string/app_name"
         android:theme="@android:style/Theme.Material.NoActionBar">
         <service
             android:name=".LyricMotionNotificationListener"
             android:exported="true"
-            android:label="LyricMotion media session access"
+            android:label="@string/notification_service_label"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <intent-filter>
                 <action android:name="android.service.notification.NotificationListenerService" />

@@ -70,6 +70,39 @@ The initial 2026-11-25 GPUI-only APK built for ARM64 before the emulator was ins
 
 ### Runtime limits
 
-- `adb devices -l` reported no connected devices. No emulator was launched or manipulated. These M1 APKs have not been installed or smoke-tested.
-- Controlled media-session publisher testing, media-to-clock-to-lyrics-to-renderer runtime verification, real-player compatibility, process/surface lifecycle testing and physical ARM64 testing remain pending. The successful build does not establish runtime integration or player support.
-- No APK was installed on a phone and no device permission was changed.
+- At the time of this build-only check, `adb devices -l` reported no connected devices. No emulator was launched or manipulated and no M1 APK had yet been installed.
+- The subsequent physical ARM64 startup, Spotify-session, and Home/foreground results are recorded in the following section; further lifecycle and transport coverage remains open.
+- No device permission was changed during this build-only check.
+
+## 2026-11-26 — Physical ARM64 JNI/startup fix
+
+### Root cause and regression guard
+
+- The installed pre-fix APK hash matched the then-current ARM64 artifact (`0CA41FD44CB51604CDBD917768FB93441182E0CD663C9328F9CAF494F9279A23`), ruling out a stale APK. Its DEX declared all seven `@JvmStatic external` methods and its ELF dynamic symbol table exported the matching `Java_com_lyricmotion_android_LyricMotionActivity_*` names.
+- `NativeActivity` had loaded the native library to initialize `ANativeActivity_onCreate`, but Kotlin's `LyricMotionActivity` class loader had not loaded the library for resolving its own external methods. The first call to `nativeOnCacheRoot` therefore failed despite the correct symbol being present.
+- `LyricMotionActivity.onCreate` now calls `System.loadLibrary("lyricmotion_android")` immediately after `super.onCreate()` and before any JNI callback.
+- Added `scripts\verify-jni-bindings.ps1`. It reads native declarations from the compiled APK DEX, checks them against Kotlin source, extracts the requested ABI library, and compares each generated JNI name with `llvm-nm` dynamic exports. It verified all seven bindings on the rebuilt APK.
+
+### Physical-device verification
+
+- Rebuilt ARM64 with the existing constrained toolchain; Gradle and Kotlin packaging succeeded. Installed the corrected APK on the authorized OnePlus 7 Pro using `adb install -r`; install returned `Success`.
+- `am start -W` opened `LyricMotionActivity` successfully. App PID `17345` remained alive. Device logcat confirms the APK library was loaded both for NativeActivity and through the app class loader, with no `UnsatisfiedLinkError` or fatal application exception.
+- Native renderer initialized on the phone's Adreno 640 Vulkan adapter. Logcat reported `Direct WGPU surface ready: 1080x2340, Rgba8UnormSrgb`; a captured frame visibly showed the rendered screen.
+- Spotify's already-active session supplied current metadata, album art, playback state/progress and line-synchronized lyrics to the screen. Notification access was already enabled; this test changed no phone permissions or unrelated settings.
+- Sent Home and returned to LyricMotion. The same PID resumed, WGPU selected the Adreno 640 Vulkan adapter again, and a fresh `1080x2340` surface initialized. No crash was observed.
+- Pulled the installed package APK and verified it exactly matched the delivered APK SHA-256: `5881C3D7278F3447EF07B98B9EE131F0892638E5B35E47FC9FE191C652C8B824`.
+- Delivered artifact: `%USERPROFILE%\Downloads\LyricMotion-Android-arm64-debug-fixed.apk`; preserved project copy: `artifacts\lyricmotion-arm64-fixed-debug.apk` (48,062,681 bytes).
+
+### Remaining device coverage
+
+- Startup, native JNI resolution, physical ARM64 Vulkan rendering, Spotify metadata/lyrics display and Home/foreground surface recreation are verified on this phone.
+- Process death, rotation, screen-off/OEM power restrictions, long-running thermal/performance behavior and transport-button action delivery were not verified in this pass. Spotify/YouTube Music/etc. compatibility beyond the observed Spotify session is not claimed.
+
+## 2026-11-26 — Eonara Rebrand Build Verification
+
+- `cargo test --workspace` (`stable-x86_64-pc-windows-gnu`): **33 passed, 0 failed** in `0.03s`.
+- `.\android\gradlew.bat -p android --no-daemon --max-workers=1 assembleNativeDebug` (JDK 24.0.2, SDK 35, Build Tools 36.0.0, NDK `27.2.12479018`): **BUILD SUCCESSFUL in 52s**.
+- `.\scripts\verify-jni-bindings.ps1 -ApkPath .\android\app\build\outputs\apk\debug\app-debug.apk -Abi arm64-v8a`: **7/7** JNI declarations matched `liblyricmotion_android.so` exports.
+- `aapt2 dump badging`: confirmed `package: name='com.lyricmotion.android'`, `application-label:'Eonara'`, `application-icon-160..640:'res/mipmap-anydpi-v26/ic_launcher.xml'`, and ZIP audit confirmed `res/drawable/eonara_poster.jpg` + all density mipmaps.
+- Artifact: `artifacts\eonara-arm64-debug.apk` & `%USERPROFILE%\Downloads\Eonara-Android-arm64-debug.apk` (`48,373,444` bytes, SHA-256 `CC15AB2D60AAD9BFF209AE291F705D05DE798B28888363393E77AE1D40AD2F3F`).
+- Note: Physical phone installation of the Eonara-branded APK remains queued after release/publish; earlier `8d36196` M1 Spotify/Vulkan runtime proof remains preserved.

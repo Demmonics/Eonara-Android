@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 150" fill="none">
+  <defs>
+    <linearGradient id="cGold" x1="10%" y1="0%" x2="90%" y2="100%">
+      <stop offset="0%" stop-color="#f9e2c1"/>
+      <stop offset="50%" stop-color="#e8c493"/>
+      <stop offset="100%" stop-color="#c99f68"/>
+    </linearGradient>
+  </defs>
+  <g transform="rotate(-11 395 75)">
+    <path d="M 140 78 A 258 40 0 0 1 654 70" stroke="url(#cGold)" stroke-opacity="0.55" stroke-width="2.2"/>
+  </g>
+  <g transform="translate(-80, -32)">
+    <path d="M 105 64 H 176 V 73 H 119 V 104 H 164 V 113 H 119 V 146 H 178 V 155 H 105 Z" fill="url(#cGold)"/>
+    <circle cx="248" cy="110" r="44" stroke="url(#cGold)" stroke-width="11"/>
+    <path d="M 200 144 L 296 76" stroke="url(#cGold)" stroke-width="4.5" stroke-linecap="round"/>
+    <path d="M 326 155 V 64 H 338 L 408 139 V 64 H 419 V 155 H 407 L 337 80 V 155 Z" fill="url(#cGold)"/>
+    <path d="M 378 24 C 380.2 44 383.5 48 394 50 C 383.5 52 380.2 56 378 76 C 375.8 56 372.5 52 362 50 C 372.5 48 375.8 44 378 24 Z" fill="url(#cGold)"/>
+    <path d="M 451 155 L 494 63 H 506 L 549 155 H 534 L 500 79 L 466 155 Z" fill="url(#cGold)"/>
+    <path d="M 472 122 Q 500 114 528 122" stroke="url(#cGold)" stroke-width="6.5" stroke-linecap="round"/>
+    <path d="M 578 155 V 64 H 618 C 638 64 650 74 650 90 C 650 105 639 115 621 117 L 656 155 H 639 L 607 118 H 591 V 155 Z M 591 74 V 108 H 617 C 630 108 637 101 637 91 C 637 80 630 74 617 74 Z" fill="url(#cGold)"/>
+    <path d="M 684 155 L 728 63 H 741 L 785 155 H 770 L 734.5 78 L 699 155 Z" fill="url(#cGold)"/>
+  </g>
+  <g transform="rotate(-11 395 75)">
+    <path d="M 654 70 A 258 40 0 0 1 140 78" stroke="url(#cGold)" stroke-width="3.2" stroke-linecap="round"/>
+  </g>
+</svg>
